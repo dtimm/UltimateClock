@@ -10,9 +10,9 @@ public class UltimateClockActivity extends Activity
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        OddClock timer = new OddClock();
+        timer = new CustomClock(1000, 60000, 3600000, 28*3600000, 2, 0);
     	TextView tv = new TextView(this);
-        tv.setText("28 hour time -- " + timer.showTime());
+        tv.setText("28 hour time -- " + timer.toString());
         setContentView(tv);
     }
     
@@ -25,10 +25,12 @@ public class UltimateClockActivity extends Activity
     protected void onResume()
     {
     	super.onResume();
-    	OddClock timer = new OddClock();
+    	timer.refresh();
     	TextView tv = new TextView(this);
-    	tv.setText("28 hour time -- " + timer.showTime());
+    	tv.setText("28 hour time -- " + timer.toString());
         setContentView(tv);
     	// implement
     }
+    
+    private CustomClock timer;
 }
