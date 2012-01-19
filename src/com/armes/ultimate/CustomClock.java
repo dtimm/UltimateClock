@@ -6,21 +6,23 @@ public class CustomClock extends Time
 {
 	public CustomClock(int perSec, int perMin, int perHour, int perDay, int parts, long difference)
 	{
-		super.set(System.currentTimeMillis() + difference);
+		holder = System.currentTimeMillis() + difference;
+		super.set(holder);
 		lengthOfSecond = perSec;
 		lengthOfMinute = perMin;
 		lengthOfHour = perHour;
 		lengthOfDay = perDay;
 		partsOfDay = parts;
+		offset = difference;
 		
 		// milliseconds into current epoch day
-		long holder = super.toMillis(true)%lengthOfDay;
-		second = (int) (holder%lengthOfSecond);
-		minute = (int) (holder%lengthOfMinute)/(lengthOfSecond);
-		hour   = (int) (holder%lengthOfHour)/(lengthOfMinute*lengthOfSecond);
+		long today = holder%lengthOfDay;
+		second = (int) (today%lengthOfMinute)/lengthOfSecond;
+		minute = (int) (today%lengthOfHour)/lengthOfMinute;
+		hour   = (int) (today%lengthOfDay)/lengthOfHour;
 	}
 	
-	public CustomClock()
+	public CustomClock() // default uses standard 24 hour clock
 	{
 		super.set(System.currentTimeMillis());
 		lengthOfSecond = 1000;
@@ -36,6 +38,7 @@ public class CustomClock extends Time
 	private long lengthOfDay;
 	private int partsOfDay;     // AM-PM, split into fourths, etc.
 	private long offset;        // difference from Java system time.
+	private long holder;        // holds last set number
 	
 	public String toString()
 	{
@@ -51,7 +54,15 @@ public class CustomClock extends Time
 	
 	public void refresh()
 	{
-		long difference = System.currentTimeMillis() - super.toMillis(true);
-		
+		holder = System.currentTimeMillis() + offset;
+		long today = holder%lengthOfDay;
+		second = (int) (today%lengthOfMinute)/lengthOfSecond;
+		minute = (int) (today%lengthOfHour)/lengthOfMinute;
+		hour   = (int) (today%lengthOfDay)/lengthOfHour;
+	}
+	
+	public enum Format
+	{
+		BIN, OCT, DEC, HEX, MAYA, BAYL
 	}
 }
