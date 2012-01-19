@@ -1,5 +1,6 @@
 package com.armes.ultimate;
 
+import android.graphics.Canvas;
 import android.text.format.Time;
 
 public class CustomClock extends Time
@@ -52,7 +53,7 @@ public class CustomClock extends Time
 		return handle;
 	}
 	
-	public void refresh()
+	public void update()
 	{
 		holder = System.currentTimeMillis() + offset;
 		long today = holder%lengthOfDay;
@@ -63,6 +64,18 @@ public class CustomClock extends Time
 	
 	public enum Format
 	{
-		BIN, OCT, DEC, HEX, MAYA, BAYL
-	}
+		BIN(2), 
+		OCT(8), 
+		DEC(10), 
+		HEX(16), 
+		MAYA(20), 
+		BAYL(60);
+		
+		private int value;
+		
+		private Format(int value)
+		{
+			this.value = value;
+		}
+	};
 }
