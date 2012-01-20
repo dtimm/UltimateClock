@@ -23,7 +23,8 @@ public class Clock extends SurfaceView implements SurfaceHolder.Callback
 		SurfaceHolder holder = getHolder();
 		holder.addCallback(this);
 		
-		timer = new CustomClock(864, 86400, 8640000, 86400000, 1, 0); // metric clock
+		// 24 hour clock
+		timer = new CustomClock(1000, 60*1000, 60*60*1000, 24*60*60*1000, true, 0);
 		
 		thread = new ClockThread(holder, context, new Handler(), timer);
 		setFocusable(true);
@@ -43,6 +44,7 @@ public class Clock extends SurfaceView implements SurfaceHolder.Callback
 		initView();
 	}
 
+	@Override
 	public void onDraw(Canvas canvas)
 	{
 		super.onDraw(canvas);

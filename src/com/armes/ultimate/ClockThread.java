@@ -18,8 +18,8 @@ public class ClockThread extends Thread
 	private Paint blackPaint;
 	CustomClock timer;
 	
-	private long sleepTime;
-	private long delay = 70;
+	private long sleepTime_;
+	private long delay_ = 70;
 	
 	int state = 1;
 	public final static int RUNNING = 1;
@@ -35,6 +35,7 @@ public class ClockThread extends Thread
 		linePaint.setARGB(255, 255, 255, 255);
 		linePaint.setTextAlign(Paint.Align.CENTER);
 		linePaint.setTextSize(50);
+		linePaint.setAntiAlias(true);
 		blackPaint = new Paint();
 		blackPaint.setARGB(255, 0, 0, 0);
 		
@@ -49,7 +50,7 @@ public class ClockThread extends Thread
 		{
 			long beforeTime = System.nanoTime();
 			timer.update();
-		
+			
 			// draw it
 			Canvas c = null;
 			try
@@ -57,9 +58,10 @@ public class ClockThread extends Thread
 				c = surfHolder.lockCanvas(null);
 				synchronized(surfHolder)
 				{
-					c.drawRect(0, 0, c.getWidth(), c.getHeight(), blackPaint);
-					
-					c.drawText(timer.toString(), 100, 100, linePaint);
+					int width = c.getWidth();
+					int height = c.getHeight();
+					c.drawRect(0, 0, width, height, blackPaint);
+					c.drawText(timer.toString(), width/2, 100, linePaint);
 				}
 			}
 			finally
@@ -68,11 +70,11 @@ public class ClockThread extends Thread
 			}
 		
 			// sleep it
-			this.sleepTime = delay - ((System.nanoTime() - beforeTime)/1000000L);
+			this.sleepTime_ = delay_ - ((System.nanoTime() - beforeTime)/1000000L);
 			
 			try
 			{
-				if(sleepTime > 0) Thread.sleep(sleepTime);
+				if(sleepTime_ > 0) Thread.sleep(sleepTime_);
 			}
 			catch (InterruptedException ex)
 			{

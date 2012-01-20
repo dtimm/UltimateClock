@@ -5,16 +5,17 @@ import android.text.format.Time;
 
 public class CustomClock extends Time
 {
-	public CustomClock(int perSec, int perMin, int perHour, int perDay, int parts, long difference)
+	public CustomClock(int perSec, int perMin, int perHour, int perDay, boolean parts, long difference)
 	{
 		holder = System.currentTimeMillis() + difference;
 		super.set(holder);
+		offset = difference + this.gmtoff * 1000;
+		holder += this.gmtoff * 1000;
 		lengthOfSecond = perSec;
 		lengthOfMinute = perMin;
 		lengthOfHour = perHour;
 		lengthOfDay = perDay;
-		partsOfDay = parts;
-		offset = difference;
+		amPmSplit = parts;
 		
 		// milliseconds into current epoch day
 		long today = holder%lengthOfDay;
@@ -30,27 +31,51 @@ public class CustomClock extends Time
 		lengthOfMinute = 60000;
 		lengthOfHour = 3600000;
 		lengthOfDay = 24*3600000;
-		partsOfDay = 2;
+		amPmSplit = true;
 	}
 	
 	private int lengthOfSecond; // in milliseconds
 	private int lengthOfMinute;
 	private int lengthOfHour;
 	private long lengthOfDay;
-	private int partsOfDay;     // AM-PM, split into fourths, etc.
+	private boolean amPmSplit;  // AM-PM, split into fourths, etc.
 	private long offset;        // difference from Java system time.
 	private long holder;        // holds last set number
 	
+	@Override
 	public String toString()
 	{
 		String handle = new String();
-		if(hour < 10) handle += "0";
-		handle = handle + hour + ":";
+		long hoursInDay = lengthOfDay/lengthOfHour;
+		
+		// checks for AM/PM split and handles logic
+		if(amPmSplit && hour > hoursInDay/2)
+		{
+			if(hour - hoursInDay/2 < 10) handle += "0";
+			handle = handle + (hour - hoursInDay/2) + ":";
+		}
+		else
+		{
+			if(hour < 10) handle += "0";
+			handle = handle + hour + ":";
+		}
 		if(minute < 10) handle += "0";
 		handle = handle + minute + ":";
 		if(second < 10) handle += "0";
 		handle = handle + second;
+		
+		if(amPmSplit)
+		{
+			if(amPmSplit && hour > hoursInDay/2) handle = handle + " PM";
+			else handle = handle + " AM";
+		}
+		
 		return handle;
+	}
+	
+	public void setOffset(long value)
+	{
+		this.offset = value;
 	}
 	
 	public void update()
