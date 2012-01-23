@@ -16,9 +16,11 @@ public class UltimateClockAppWidgetProvider extends AppWidgetProvider
 		 {
 	            int appWidgetId = appWidgetIds[i];
 	            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.ultimate_clock_appwidget);
-	            views.setString(R.id.current_time, null, timer.toString());
-
-	            // Tell the AppWidgetManager to perform an update on the current app widget
+	            
+	            // Set text to the current CustomClock time.
+	            views.setTextViewText(R.id.currentTime, timer.toString());
+	            
+	            // Update the app widget.
 	            appWidgetManager.updateAppWidget(appWidgetId, views);
 		 }
 	 }

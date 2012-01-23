@@ -3,6 +3,7 @@
 
     <string name="app_name">UltimateClock</string>
     <string name="ultimate_clock_text">Huh? What?!</string>
-    <string name="current_time">Noonish?</string>
+    <string name="current_time">PLACEHOLDER FOR TIME</string>
+    <string name="clock_type">Current Decimal Time:</string>
 
 </resources>
