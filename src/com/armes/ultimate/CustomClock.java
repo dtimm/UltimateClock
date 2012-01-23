@@ -73,11 +73,9 @@ public class CustomClock extends Time
 		return handle;
 	}
 	
-	public void setOffset(long value)
-	{
-		this.offset = value;
-	}
-	
+   /*
+    * Updates time to current state.
+    */
 	public void update()
 	{
 		holder = System.currentTimeMillis() + offset;
@@ -87,6 +85,9 @@ public class CustomClock extends Time
 		hour   = (int) (today%lengthOfDay)/lengthOfHour;
 	}
 	
+   /*
+    * Defines the formatting of the string output.
+	*/
 	public enum Format
 	{
 		BIN(2), 

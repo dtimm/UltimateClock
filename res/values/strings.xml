@@ -3,5 +3,6 @@
 
     <string name="app_name">UltimateClock</string>
     <string name="ultimate_clock_text">Huh? What?!</string>
+    <string name="current_time">Noonish?</string>
 
 </resources>
