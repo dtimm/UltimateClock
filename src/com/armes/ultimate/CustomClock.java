@@ -9,7 +9,7 @@ public class CustomClock extends Time
 	{
 		holder = System.currentTimeMillis() + difference;
 		super.set(holder);
-		offset = difference + this.gmtoff * 1000;
+		offset = difference + this.gmtoff * 1000; // include pre-calculated timezone adjustment.
 		holder += this.gmtoff * 1000;
 		lengthOfSecond = perSec;
 		lengthOfMinute = perMin;
