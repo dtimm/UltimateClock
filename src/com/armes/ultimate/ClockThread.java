@@ -16,7 +16,7 @@ public class ClockThread extends Thread
 	private Context context;
 	private Paint linePaint;
 	private Paint blackPaint;
-	CustomClock timer;
+	CustomClock timer1, timer2;
 	
 	private long sleepTime_;
 	private long delay_ = 70;
@@ -25,7 +25,8 @@ public class ClockThread extends Thread
 	public final static int RUNNING = 1;
 	public final static int PAUSED  = 2;
 	
-	public ClockThread(SurfaceHolder sh, Context ct, Handler hand, CustomClock cc)
+	public ClockThread(SurfaceHolder sh, Context ct, Handler hand, 
+			CustomClock dec, CustomClock norm)
 	{
 		surfHolder = sh;
 		this.handle = hand;
@@ -39,7 +40,8 @@ public class ClockThread extends Thread
 		blackPaint = new Paint();
 		blackPaint.setARGB(255, 0, 0, 0);
 		
-		timer = cc;
+		timer1 = dec;
+		timer2 = norm;
 	}
 	
 	@Override
@@ -49,7 +51,8 @@ public class ClockThread extends Thread
 		while(state == RUNNING)
 		{
 			long beforeTime = System.nanoTime();
-			timer.update();
+			timer1.update();
+			timer2.update();
 			
 			// draw it
 			Canvas c = null;
@@ -61,7 +64,8 @@ public class ClockThread extends Thread
 					int width = c.getWidth();
 					int height = c.getHeight();
 					c.drawRect(0, 0, width, height, blackPaint);
-					c.drawText(timer.toString(), width/2, 100, linePaint);
+					c.drawText(timer1.toString('.'), width/2, 100, linePaint);
+					c.drawText(timer2.toString(), width/2, 200, linePaint);
 				}
 			}
 			finally

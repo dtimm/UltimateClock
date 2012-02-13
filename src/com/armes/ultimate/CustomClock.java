@@ -1,6 +1,5 @@
 package com.armes.ultimate;
 
-import android.graphics.Canvas;
 import android.text.format.Time;
 
 public class CustomClock extends Time
@@ -9,7 +8,7 @@ public class CustomClock extends Time
 	{
 		holder = System.currentTimeMillis() + difference;
 		super.set(holder);
-		offset = difference + this.gmtoff * 1000; // include pre-calculated timezone adjustment.
+		offset = difference + this.gmtoff * 1000; // include system calculated timezone adjustment.
 		holder += this.gmtoff * 1000;
 		lengthOfSecond = perSec;
 		lengthOfMinute = perMin;
@@ -27,6 +26,7 @@ public class CustomClock extends Time
 	public CustomClock() // default uses standard 24 hour clock
 	{
 		super.set(System.currentTimeMillis());
+		offset = this.gmtoff * 1000;
 		lengthOfSecond = 1000;
 		lengthOfMinute = 60000;
 		lengthOfHour = 3600000;
@@ -42,8 +42,71 @@ public class CustomClock extends Time
 	private long offset;        // difference from Java system time.
 	private long holder;        // holds last set number
 	
-	@Override
-	public String toString()
+	/**
+	 * Formats a CustomClock to a display type and returns a string.
+	 *
+	 * @param format a string with hours, minutes, and seconds and punctuation
+	 * @return a string in the format specified.
+	 */
+	public String toString(String format)
+	{
+		String handle = new String();
+		
+		int h, hs, m, ms, s, ss;
+		h=hs=m=ms=s=ss=0;
+		
+		for(int i=0;i<format.length();i++)
+		{
+			switch(format.charAt(i))
+			{
+			case 'h':
+			case 'H':
+				hs++;
+				break;
+			case 'm':
+			case 'M':
+				ms++;
+				break;
+			case 's':
+			case 'S':
+				ss++;
+				break;
+			default:
+				break;
+			}
+		}
+		
+		for(int i=0;i<format.length();i++)
+		{
+			switch(format.charAt(i))
+			{
+			case 'h':
+			case 'H':
+				
+				break;
+			case 'm':
+			case 'M':
+				
+				break;
+			case 's':
+			case 'S':
+				
+				break;
+			default:
+				
+				break;
+			}
+		}
+		return handle;
+	}
+	
+	/**
+	 * Formats a CustomClock to a display with a certain punctuation character.
+	 *
+	 * @param format a char to replace the seminal colon
+	 * @return a string in the format specified.
+	 */
+	public String toString(char format)
 	{
 		String handle = new String();
 		long hoursInDay = lengthOfDay/lengthOfHour;
@@ -52,15 +115,22 @@ public class CustomClock extends Time
 		if(amPmSplit && hour > hoursInDay/2)
 		{
 			if(hour - hoursInDay/2 < 10) handle += "0";
-			handle = handle + (hour - hoursInDay/2) + ":";
+			handle = handle + (hour - hoursInDay/2) + format;
 		}
 		else
 		{
-			if(hour < 10) handle += "0";
-			handle = handle + hour + ":";
+			if(hour == 0)
+			{
+				handle = handle + hoursInDay + format;
+			}
+			else
+			{
+				if(hour < 10) handle += "0";
+				handle = handle + hour + format;
+			}
 		}
 		if(minute < 10) handle += "0";
-		handle = handle + minute + ":";
+		handle = handle + minute + format;
 		if(second < 10) handle += "0";
 		handle = handle + second;
 		
@@ -71,6 +141,12 @@ public class CustomClock extends Time
 		}
 		
 		return handle;
+	}
+	
+	@Override
+	public String toString()
+	{
+		return this.toString(':');
 	}
 	
    /*

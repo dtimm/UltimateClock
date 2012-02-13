@@ -11,7 +11,7 @@ public class Clock extends SurfaceView implements SurfaceHolder.Callback
 {
 	long lastUpdate = 0;
 	long sleepTime = 0;
-	CustomClock timer;
+	CustomClock decimal, normal;
 	
 	SurfaceHolder surfaceHolder;
 	Context context;
@@ -24,9 +24,10 @@ public class Clock extends SurfaceView implements SurfaceHolder.Callback
 		holder.addCallback(this);
 		
 		// 24 hour clock
-		timer = new CustomClock(864, 86400, 8640000, 86400000, false, 0);
+		decimal = new CustomClock(864, 86400, 8640000, 86400000, false, 0);
+		normal =  new CustomClock(1000, 60000, 3600000, 86400000, true, 0);
 		
-		thread = new ClockThread(holder, context, new Handler(), timer);
+		thread = new ClockThread(holder, context, new Handler(), decimal, normal);
 		setFocusable(true);
 	}
 	
@@ -67,7 +68,7 @@ public class Clock extends SurfaceView implements SurfaceHolder.Callback
 	{
 		if(thread.state == ClockThread.PAUSED) // is resuming
 		{
-			thread = new ClockThread(getHolder(), context, new Handler(), timer);
+			thread = new ClockThread(getHolder(), context, new Handler(), decimal, normal);
 			thread.start();
 		}
 		else // already going

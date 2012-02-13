@@ -1,7 +1,6 @@
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_height="fill_parent" android:id="@+id/clockLayout" android:layout_width="fill_parent">
         <LinearLayout android:layout_width="fill_parent" android:id="@+id/linearLayout1" android:layout_height="fill_parent" android:orientation="vertical" android:weightSum="1">
-            <TextView android:textAppearance="?android:attr/textAppearanceLarge" android:layout_height="wrap_content" android:layout_weight="0.50" android:layout_width="fill_parent" android:id="@+id/clockType" android:text="@string/clock_type" android:gravity="center"></TextView>
-            <TextView android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceLarge" android:layout_weight="0.50" android:layout_width="fill_parent" android:id="@+id/currentTime" android:text="@string/current_time" android:gravity="center"></TextView>
+            <TextView android:textAppearance="?android:attr/textAppearanceLarge" android:text="@string/current_time" android:gravity="center" android:id="@+id/currentDecimalTime" android:layout_width="fill_parent" android:layout_height="fill_parent" android:textSize="60px"></TextView>
         </LinearLayout>
     </FrameLayout>
