@@ -4,6 +4,16 @@ import android.text.format.Time;
 
 public class CustomClock extends Time
 {
+	/**
+	 * Builds a clock with customizable seconds, minutes, hours, and days.
+	 * 
+	 * @param perSec milliseconds in a "second"
+	 * @param perMin milliseconds in a "minute"
+	 * @param perHour milliseconds in an "hour"
+	 * @param perDay milliseconds in a "day"
+	 * @param parts whether the day is split in the middle
+	 * @param difference millisecond offset from system time (system time already corrected for timezone)
+	 */
 	public CustomClock(int perSec, int perMin, int perHour, int perDay, boolean parts, long difference)
 	{
 		holder = System.currentTimeMillis() + difference;
@@ -23,7 +33,10 @@ public class CustomClock extends Time
 		hour   = (int) (today%lengthOfDay)/lengthOfHour;
 	}
 	
-	public CustomClock() // default uses standard 24 hour clock
+	/**
+	 * Default clock constructor makes a "normal" clock.
+	 */
+	public CustomClock()
 	{
 		super.set(System.currentTimeMillis());
 		offset = this.gmtoff * 1000;
@@ -45,7 +58,7 @@ public class CustomClock extends Time
 	/**
 	 * Formats a CustomClock to a display type and returns a string.
 	 *
-	 * @param format a string with hours, minutes, and seconds and punctuation
+	 * @param format a string with hours, minutes, and seconds and punctuation (e.g. HH.MM.SS)
 	 * @return a string in the format specified.
 	 */
 	public String toString(String format)
@@ -103,10 +116,10 @@ public class CustomClock extends Time
 	/**
 	 * Formats a CustomClock to a display with a certain punctuation character.
 	 *
-	 * @param format a char to replace the seminal colon
+	 * @param punct a char to replace the seminal colon
 	 * @return a string in the format specified.
 	 */
-	public String toString(char format)
+	public String toString(char punct)
 	{
 		String handle = new String();
 		long hoursInDay = lengthOfDay/lengthOfHour;
@@ -115,22 +128,22 @@ public class CustomClock extends Time
 		if(amPmSplit && hour > hoursInDay/2)
 		{
 			if(hour - hoursInDay/2 < 10) handle += "0";
-			handle = handle + (hour - hoursInDay/2) + format;
+			handle = handle + (hour - hoursInDay/2) + punct;
 		}
 		else
 		{
-			if(hour == 0)
+			if(hour == 0 && amPmSplit)
 			{
-				handle = handle + hoursInDay + format;
+				handle = handle + hoursInDay/2 + punct;
 			}
 			else
 			{
 				if(hour < 10) handle += "0";
-				handle = handle + hour + format;
+				handle = handle + hour + punct;
 			}
 		}
 		if(minute < 10) handle += "0";
-		handle = handle + minute + format;
+		handle = handle + minute + punct;
 		if(second < 10) handle += "0";
 		handle = handle + second;
 		
@@ -149,7 +162,7 @@ public class CustomClock extends Time
 		return this.toString(':');
 	}
 	
-   /*
+   /**
     * Updates time to current state.
     */
 	public void update()
@@ -161,8 +174,8 @@ public class CustomClock extends Time
 		hour   = (int) (today%lengthOfDay)/lengthOfHour;
 	}
 	
-   /*
-    * Defines the formatting of the string output.
+   /**
+    * Defines number base system.
 	*/
 	public enum Format
 	{

@@ -20,7 +20,7 @@ public class UltimateClockAppWidgetProvider extends AppWidgetProvider
 		hand = new Handler();
 		hand.postDelayed(updater, 864);
 	}
-	 
+	
 	private CustomClock dec;
 	private Context bigContext;
 	private Handler hand;
